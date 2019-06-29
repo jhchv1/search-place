@@ -22,7 +22,7 @@ public class SearchHistoryController {
     private final SearchHistoryRepository searchHistoryRepository;
 
     @GetMapping
-    @PreAuthorize("!isAnonymous()")
+    @PreAuthorize("isAuthenticated()")
     public String doGet(@AuthenticationPrincipal User user, Model model) {
         List<SearchHistoryResponse> histories = searchHistoryRepository
                 .findByRecordedBy(user, new Sort(Sort.Direction.DESC, "recordedDateTime"))
