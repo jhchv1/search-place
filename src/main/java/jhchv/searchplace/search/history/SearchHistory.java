@@ -22,10 +22,10 @@ public class SearchHistory {
 
     @CreatedBy
     @ManyToOne
-    @JoinColumn(name = "createdBy")
-    private User createdBy;
+    @JoinColumn(name = "recordedBy")
+    private User recordedBy;
 
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime recordedDateTime;
 
 }

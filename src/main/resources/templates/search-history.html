@@ -35,18 +35,14 @@
     </nav>
 </div>
 
-<div class="container bg-kakao py-1 mt-5">
-    <form method="GET" action="/search" class="my-5">
-        <div class="form-group">
-            <label for="keyword" class="h5">검색할 장소를 입력하세요!</label>
-            <input type="text" id="keyword" name="keyword" class="form-control form-control-lg border-kakao" />
-        </div>
-    </form>
+<div class="container my-5">
+    <ul class="list-group">
+        <li class="list-group-item mb-1" th:each="history : ${histories}">
+            <span th:text="${history.keyword}" class="h5"></span>
+            <span th:text="${#temporals.format(history.recordedDateTime, 'yyyy-MM-dd HH:mm:ss')}" class="text-muted"></span>
+        </li>
+    </ul>
 </div>
-
-<form name="logoutForm" method="POST" th:action="@{/logout}" th:hidden="true">
-    <input type="submit" />
-</form>
 
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/popper.js/umd/popper.min.js"></script>
