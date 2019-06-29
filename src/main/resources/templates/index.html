@@ -44,6 +44,21 @@
     </form>
 </div>
 
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center row">
+            <span class="font-weight-bold">인기 키워드 순위</span>
+            <small class="text-muted" th:text="${#temporals.format(standardDateTime, 'yyyy-MM-dd HH:mm:ss')} + ' 기준'"></small>
+        </li>
+        <li class="list-group-item row" th:if="${#lists.isEmpty(realTimeTopKeywords)}">검색된 키워드가 없습니다.</li>
+        <li class="list-group-item row" th:each="realTimeTopKeyword : ${realTimeTopKeywords}">
+            <span class="badge col-1" th:text="${realTimeTopKeyword.rank}"></span>
+            <span th:text="${realTimeTopKeyword.keyword}"></span>
+            <small class="text-muted ml-3" th:text="${realTimeTopKeyword.totalSearchCount + '회 검색'}"></small>
+        </li>
+    </ul>
+</div>
+
 <form name="logoutForm" method="POST" th:action="@{/logout}" th:hidden="true">
     <input type="submit" />
 </form>

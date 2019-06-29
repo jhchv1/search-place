@@ -2,6 +2,8 @@ package jhchv.searchplace.search;
 
 import jhchv.searchplace.search.history.SearchHistory;
 import jhchv.searchplace.search.history.SearchHistoryRepository;
+import jhchv.searchplace.search.history.TotalSearchCountByKeyword;
+import jhchv.searchplace.search.history.TotalSearchCountByKeywordRepository;
 import jhchv.searchplace.search.response.SearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -17,6 +19,8 @@ public class SearchServiceImpl implements SearchService {
 
     private final SearchHistoryRepository searchHistoryRepository;
 
+    private final TotalSearchCountByKeywordRepository totalSearchCountByKeywordRepository;
+
     private final RestTemplate restTemplate;
 
     @Override
@@ -24,6 +28,7 @@ public class SearchServiceImpl implements SearchService {
     public SearchResponse search(String keyword, int page) {
 
         this.writeSearchHistory(keyword);
+        this.plusTotalSearchCount(keyword);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "KakaoAK 58eef2e2c12deb84bb4f0911a29f5b61");
@@ -39,6 +44,14 @@ public class SearchServiceImpl implements SearchService {
         SearchHistory searchHistory = new SearchHistory();
         searchHistory.setKeyword(keyword);
         searchHistoryRepository.save(searchHistory);
+    }
+
+    private void plusTotalSearchCount(String keyword) {
+        TotalSearchCountByKeyword totalSearchCountByKeyword =
+                totalSearchCountByKeywordRepository.findById(keyword).orElse(new TotalSearchCountByKeyword());
+        totalSearchCountByKeyword.setKeyword(keyword);
+        totalSearchCountByKeyword.setTotalSearchCount(totalSearchCountByKeyword.getTotalSearchCount() + 1);
+        totalSearchCountByKeywordRepository.save(totalSearchCountByKeyword);
     }
 
 }
