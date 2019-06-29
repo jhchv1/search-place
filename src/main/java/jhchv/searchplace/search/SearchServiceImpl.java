@@ -27,10 +27,8 @@ public class SearchServiceImpl implements SearchService {
     @Transactional
     public SearchResponse search(String keyword, int page) {
 
-        if (page == 1) {
-            this.writeSearchHistory(keyword);
-            this.plusTotalSearchCount(keyword);
-        }
+        this.writeSearchHistory(keyword);
+        this.plusTotalSearchCount(keyword);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "KakaoAK 58eef2e2c12deb84bb4f0911a29f5b61");
