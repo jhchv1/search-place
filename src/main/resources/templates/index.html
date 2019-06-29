@@ -53,8 +53,8 @@
         <li class="list-group-item row" th:if="${#lists.isEmpty(realTimeTopKeywords)}">검색된 키워드가 없습니다.</li>
         <li class="list-group-item row" th:each="realTimeTopKeyword : ${realTimeTopKeywords}">
             <span class="badge col-1" th:text="${realTimeTopKeyword.rank}"></span>
-            <span th:text="${realTimeTopKeyword.keyword}"></span>
-            <small class="text-muted ml-3" th:text="${realTimeTopKeyword.totalSearchCount + '회 검색'}"></small>
+            <a class="text-dark" th:text="${realTimeTopKeyword.keyword}" th:href="@{/search(keyword=${realTimeTopKeyword.keyword})}"></a>
+            <small class="text-muted float-right" th:text="'총 ' + ${realTimeTopKeyword.totalSearchCount + '회 검색'}"></small>
         </li>
     </ul>
 </div>

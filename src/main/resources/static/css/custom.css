@@ -15,9 +15,9 @@
     background-color: var(--kakao-color);
 }
 
-.form-control,
 .btn,
 .dropdown-menu,
+.form-control,
 .list-group-item,
 .modal-content {
     border-radius: 0 !important;
