@@ -1,0 +1,23 @@
+:root {
+    --kakao-color: #F8DF00;
+}
+
+.bg-kakao {
+    background-color: var(--kakao-color);
+}
+
+.border-kakao {
+    border-color: var(--kakao-color);
+}
+
+.btn-kakao {
+    border-color: var(--kakao-color);
+    background-color: var(--kakao-color);
+}
+
+.form-control,
+.btn,
+.dropdown-menu,
+.list-group-item {
+    border-radius: 0 !important;
+}
