@@ -32,14 +32,8 @@
     <ul id="place-list" class="list-group">
         <li class="list-group-item mb-1" th:each="document : ${documents}">
             <div>
-                <a th:text="${document.placeName}" th:href="@{/place-details/{id}(id=${document.id})}"></a>
+                <a th:text="${document.placeName}" href="#" data-toggle="modal" data-target="#placeDetailsModal" th:data-document="${document}"></a>
                 <span th:text="${document.categoryGroupName}" class="small text-muted"></span>
-            </div>
-            <div>
-                <span th:text="${document.roadAddressName}" class="small"></span>
-            </div>
-            <div>
-                <span th:text="'(지번) ' + ${document.addressName}" class="small text-muted"></span>
             </div>
         </li>
     </ul>
@@ -49,6 +43,30 @@
     </th:block>
 </div>
 
+<div class="modal fade" id="placeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="placeName" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="placeName"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="modalBody" class="modal-body">
+                <p class="small" id="categoryName"></p>
+                <p class="small" id="roadAddressName"></p>
+                <p class="small" id="addressName"></p>
+                <p class="small" id="phone"></p>
+                <h6 class="font-weight-bold">찾아가는 길
+                    <small><a id="kakaomapUrl" class="ml-1" href="#" target="_blank">카카오맵에서 보기</a></small>
+                </h6>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc47b44ace308b66b7a99651d1e33213"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc47b44ace308b66b7a99651d1e33213&libraries=services,clusterer,drawing"></script>
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/popper.js/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -61,30 +79,67 @@
                 url: '/search/ajax?keyword=[[${request.keyword}]]&page=' + (++currentPage)
             })
             .done(function (response) {
-                console.log($('#place-list'));
                 response.documents.forEach(function (document) {
+                    var stringified = JSON.stringify(document).replace(/>/gi, '&gt;').replace(/"/gi, "'");
                     $('#place-list').append(`
                         <li class="list-group-item mb-1">
                             <div>
-                                <a href="/place-details/${document.id}">${document.place_name}</a>
-                                <span class="small text-muted">${document.category_group_name}</span>
-                            </div>
-                            <div>
-                                <span class="small">${document.road_address_name}</span>
-                            </div>
-                            <div>
-                                <span class="small text-muted">(지번) ${document.address_name}</span>
+                                <a href="#" data-toggle="modal" data-target="#placeDetailsModal" data-document="${stringified}">${document.placeName}</a>
+                                <span class="small text-muted">${document.categoryGroupName}</span>
                             </div>
                         </li>
                     `);
                 });
-                if (response.meta.is_end) {
+                if (response.meta.isEnd) {
                     $('#loadNextPageButton').remove();
                 }
             })
             .fail(function () {
                 alert('요청을 처리하는 중 오류가 발생했습니다.');
             });
+        });
+
+        var data;
+        $(document).on('click', '#place-list a', function () {
+            data = $(this).data('document');
+            if (typeof data == 'string') {
+                data = data.replace(/'/gi, '"');
+                data = JSON.parse(data);
+            }
+            $('#placeName').text(data.placeName);
+            $('#categoryName').text(data.categoryName);
+            $('#roadAddressName').text(data.roadAddressName);
+            $('#addressName').text('(지번) ' + data.addressName);
+            $('#phone').text(data.phone);
+            $('#kakaomapUrl').prop('href', 'https://map.kakao.com/link/map/' + data.id);
+        });
+
+        $('#placeDetailsModal').on('shown.bs.modal', function () {
+            if (!$('#kakaomap').length) {
+                $('#modalBody').append('<div id="kakaomap" style="width:100%;height:500px;border:1px solid rgba(0,0,0,.2);"></div>');
+            }
+            var container = document.getElementById('kakaomap');
+            var position = new kakao.maps.LatLng(data.y, data.x);
+            var options = {
+                center: position,
+                level: 3
+            };
+            kakaomap = new kakao.maps.Map(container, options);
+
+            var content = `
+                <div class="card">
+                    <div class="card-body">
+                        <div>${data.placeName}</div>
+                        <div class="small text-muted">${data.roadAddressName}</div>
+                        <div class="small text-muted">(지번) ${data.addressName}</div>
+                    </div>
+                </div>
+            `;
+            var customOverlay = new kakao.maps.CustomOverlay({
+                position: new kakao.maps.LatLng(Number(data.y), data.x),
+                content: content
+            });
+            customOverlay.setMap(kakaomap);
         });
     });
 </script>
