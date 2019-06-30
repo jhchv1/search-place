@@ -1,4 +1,4 @@
-package jhchv.searchplace.api.rank;
+package jhchv.searchplace.controller.rank;
 
 import jhchv.searchplace.search.rank.KeywordRank;
 import jhchv.searchplace.search.rank.KeywordRankRepository;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/keyword-ranks")
+@RequestMapping("/keyword-ranks")
 @RequiredArgsConstructor
 public class KeywordRankController {
 

@@ -1,4 +1,4 @@
-package jhchv.searchplace.api.history;
+package jhchv.searchplace.controller.history;
 
 import jhchv.searchplace.search.history.SearchHistoryRepository;
 import jhchv.searchplace.user.User;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/histories")
+@RequestMapping("/histories")
 @RequiredArgsConstructor
 public class HistoryController {
 

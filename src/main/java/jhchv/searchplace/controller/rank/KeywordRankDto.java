@@ -1,4 +1,4 @@
-package jhchv.searchplace.api.rank;
+package jhchv.searchplace.controller.rank;
 
 import jhchv.searchplace.search.rank.KeywordRank;
 import lombok.Data;

@@ -14,7 +14,7 @@ var renderSearchHistoryPage = function () {
 var loadSearchHistory = function () {
     $.ajax({
         method: 'GET',
-        url: '/api/histories'
+        url: '/histories'
     })
     .done(function (response) {
         if (response.length) {

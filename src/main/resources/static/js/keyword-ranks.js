@@ -15,7 +15,7 @@ var renderKeywordRanksPage = function () {
 var loadKeywordRanks = function () {
     $.ajax({
         method: 'GET',
-        url: '/api/keyword-ranks'
+        url: '/keyword-ranks'
     })
     .done(function (response) {
         $('#standardDateTime').text(response.standardDateTime + ' 기준');
