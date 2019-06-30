@@ -1,5 +1,6 @@
 package jhchv.searchplace.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jhchv.searchplace.search.history.SearchHistory;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ public class SearchHistoryResponse {
 
     private String keyword;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime recordedDateTime;
 
     public SearchHistoryResponse(SearchHistory searchHistory) {
