@@ -18,15 +18,17 @@ import org.springframework.web.client.RestTemplate;
 @EnableConfigurationProperties(KakaoConfigurationProperties.class)
 public class KakaoSearchService extends AbstractSearchService<KakaoSearchResponse> {
 
-    @Autowired
-    private KakaoConfigurationProperties properties;
+    private final KakaoConfigurationProperties properties;
+
+    private final RestTemplate restTemplate;
 
     @Autowired
-    private RestTemplate restTemplate;
-
     public KakaoSearchService(
-            SearchHistoryRepository searchHistoryRepository, TotalSearchCountRepository totalSearchCountRepository) {
+            SearchHistoryRepository searchHistoryRepository, TotalSearchCountRepository totalSearchCountRepository,
+            KakaoConfigurationProperties properties) {
         super(searchHistoryRepository, totalSearchCountRepository);
+        this.properties = properties;
+        this.restTemplate = new RestTemplate();
     }
 
     @Override
