@@ -7,6 +7,9 @@ import jhchv.searchplace.search.history.TotalSearchCountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author Jihun Cha
+ */
 @RequiredArgsConstructor
 public abstract class AbstractSearchService<T extends SearchResponse> implements SearchService<T> {
 

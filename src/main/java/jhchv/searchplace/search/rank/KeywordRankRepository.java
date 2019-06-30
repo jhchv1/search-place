@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * @author Jihun Cha
+ */
 public interface KeywordRankRepository extends JpaRepository<KeywordRank, Long> {
 
     @Query("select a from KeywordRank a " +

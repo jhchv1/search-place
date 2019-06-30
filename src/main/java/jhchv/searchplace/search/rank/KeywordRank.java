@@ -5,6 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * @author Jihun Cha
+ */
 @Data
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "keyword", "rank", "rankedDateTime" }))

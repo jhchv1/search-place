@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * @author Jihun Cha
+ */
 @Controller
 @RequestMapping("/")
 @EnableConfigurationProperties(KakaoConfigurationProperties.class)

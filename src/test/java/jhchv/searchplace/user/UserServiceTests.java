@@ -14,7 +14,7 @@ import java.util.Optional;
 import static org.mockito.BDDMockito.given;
 
 /**
- * Tests for {@link UserService}
+ * Tests for {@link UserService}.
  *
  * @author Jihun Cha
  */

@@ -13,6 +13,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * @author Jihun Cha
+ */
 @Service
 @Configuration
 @EnableConfigurationProperties(KakaoConfigurationProperties.class)

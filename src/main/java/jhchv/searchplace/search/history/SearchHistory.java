@@ -11,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
+/**
+ * @author Jihun Cha
+ */
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)

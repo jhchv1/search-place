@@ -13,6 +13,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tests for {@link KeywordRankScheduler}.
+ *
+ * @author Jihun Cha
+ */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class KeywordRankSchedulerTests {

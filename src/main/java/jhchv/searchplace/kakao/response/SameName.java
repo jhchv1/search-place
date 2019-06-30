@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author Jihun Cha
+ */
 @Data
 public class SameName {
 

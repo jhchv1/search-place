@@ -3,6 +3,9 @@ package jhchv.searchplace.kakao.response;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 
+/**
+ * @author Jihun Cha
+ */
 @Data
 public class Document {
 
