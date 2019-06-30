@@ -1,7 +1,7 @@
 package jhchv.searchplace.api.rank;
 
-import jhchv.searchplace.search.rank.SearchKeywordRank;
-import jhchv.searchplace.search.rank.SearchKeywordRankRepository;
+import jhchv.searchplace.search.rank.KeywordRank;
+import jhchv.searchplace.search.rank.KeywordRankRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class KeywordRankController {
 
-    private final SearchKeywordRankRepository searchKeywordRankRepository;
+    private final KeywordRankRepository keywordRankRepository;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KeywordRankResponse doGet() {
         KeywordRankResponse response = new KeywordRankResponse();
 
-        List<SearchKeywordRank> ranks = searchKeywordRankRepository.findRealTimeTopTen();
+        List<KeywordRank> ranks = keywordRankRepository.findRealTimeTopTen();
         if (ranks.isEmpty()) {
             response.setStandardDateTime(LocalDateTime.now().withSecond(0));
             response.setKeywordRanks(new ArrayList<>());
@@ -32,7 +32,7 @@ public class KeywordRankController {
         }
 
         response.setStandardDateTime(ranks.get(0).getRankedDateTime());
-        response.setKeywordRanks(ranks.stream().map(KeywordRank::new).collect(Collectors.toList()));
+        response.setKeywordRanks(ranks.stream().map(KeywordRankDto::new).collect(Collectors.toList()));
         return response;
     }
 

@@ -12,6 +12,6 @@ public class KeywordRankResponse {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime standardDateTime;
 
-    private List<KeywordRank> keywordRanks;
+    private List<KeywordRankDto> keywordRanks;
 
 }

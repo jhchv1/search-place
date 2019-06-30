@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class TotalSearchCountByKeyword {
+public class TotalSearchCount {
 
     @Id
     private String keyword;

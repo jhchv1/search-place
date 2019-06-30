@@ -2,14 +2,13 @@ package jhchv.searchplace.search.rank;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class SearchKeywordRank {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "keyword", "rank", "rankedDateTime" }))
+public class KeywordRank {
 
     @Id
     @GeneratedValue

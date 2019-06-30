@@ -2,8 +2,8 @@ package jhchv.searchplace.search;
 
 import jhchv.searchplace.search.history.SearchHistory;
 import jhchv.searchplace.search.history.SearchHistoryRepository;
-import jhchv.searchplace.search.history.TotalSearchCountByKeyword;
-import jhchv.searchplace.search.history.TotalSearchCountByKeywordRepository;
+import jhchv.searchplace.search.history.TotalSearchCount;
+import jhchv.searchplace.search.history.TotalSearchCountRepository;
 import jhchv.searchplace.search.response.SearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -19,7 +19,7 @@ public class SearchServiceImpl implements SearchService {
 
     private final SearchHistoryRepository searchHistoryRepository;
 
-    private final TotalSearchCountByKeywordRepository totalSearchCountByKeywordRepository;
+    private final TotalSearchCountRepository totalSearchCountRepository;
 
     private final RestTemplate restTemplate;
 
@@ -47,11 +47,11 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private void plusTotalSearchCount(String keyword) {
-        TotalSearchCountByKeyword totalSearchCountByKeyword =
-                totalSearchCountByKeywordRepository.findById(keyword).orElse(new TotalSearchCountByKeyword());
-        totalSearchCountByKeyword.setKeyword(keyword);
-        totalSearchCountByKeyword.setTotalSearchCount(totalSearchCountByKeyword.getTotalSearchCount() + 1);
-        totalSearchCountByKeywordRepository.save(totalSearchCountByKeyword);
+        TotalSearchCount totalSearchCount =
+                totalSearchCountRepository.findById(keyword).orElse(new TotalSearchCount());
+        totalSearchCount.setKeyword(keyword);
+        totalSearchCount.setTotalSearchCount(totalSearchCount.getTotalSearchCount() + 1);
+        totalSearchCountRepository.save(totalSearchCount);
     }
 
 }
