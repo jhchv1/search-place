@@ -1,7 +1,7 @@
 package jhchv.searchplace.controller.search;
 
+import jhchv.searchplace.search.SearchResponse;
 import jhchv.searchplace.search.SearchService;
-import jhchv.searchplace.search.response.SearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

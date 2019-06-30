@@ -1,9 +1,7 @@
 package jhchv.searchplace.search;
 
-import jhchv.searchplace.search.response.SearchResponse;
+public interface SearchService<T extends SearchResponse> {
 
-public interface SearchService {
-
-    SearchResponse search(String keyword, int page);
+    T search(String keyword, int page);
 
 }

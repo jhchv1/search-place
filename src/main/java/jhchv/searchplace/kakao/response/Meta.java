@@ -1,4 +1,4 @@
-package jhchv.searchplace.search.response;
+package jhchv.searchplace.kakao.response;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;

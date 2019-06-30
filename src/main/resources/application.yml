@@ -2,3 +2,7 @@ spring:
   jpa:
     open-in-view: true
     show-sql: true
+kakao:
+  rest-api-key: 58eef2e2c12deb84bb4f0911a29f5b61
+  java-script-key: bc47b44ace308b66b7a99651d1e33213
+  search-place-by-keyword-url: https://dapi.kakao.com/v2/local/search/keyword.json
