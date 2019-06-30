@@ -1,75 +1,36 @@
-<!doctype html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/custom.css">
-    <title>장소 검색 서비스</title>
-</head>
-<body class="bg-light">
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
 
-<div class="bg-kakao">
-    <nav class="container navbar navbar-expand navbar-dark bg-kakao">
-        <a class="navbar-brand mr-auto text-dark font-weight-bold" th:href="@{/}">장소 검색 서비스</a>
-
-        <ul class="navbar-nav">
-            <th:block sec:authorize="isAnonymous()">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" th:href="@{/login}">로그인</a>
-                </li>
-            </th:block>
-            <th:block sec:authorize="!isAnonymous()">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        내 정보
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" th:href="@{/search-history}">내 검색 히스토리</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="javascript:document.logoutForm.submit();">로그아웃</a>
-                    </div>
-                </li>
-            </th:block>
+<div layout:fragment="content">
+    <div class="container my-5">
+        <h5 id="searchResultMessage" class="mb-3"></h5>
+        <ul id="placeList" class="list-group">
         </ul>
-    </nav>
-</div>
-
-<div class="container my-5">
-    <h5 id="searchResultMessage" class="mb-3"></h5>
-    <ul id="placeList" class="list-group">
-    </ul>
-</div>
-
-<div class="modal fade" id="placeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="placeName" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title font-weight-bold" id="placeName"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div id="modalBody" class="modal-body">
-                <p class="small" id="categoryName"></p>
-                <p class="small" id="roadAddressName"></p>
-                <p class="small" id="addressName"></p>
-                <p class="small" id="phone"></p>
-                <h6 class="font-weight-bold">찾아가는 길
-                    <small><a id="kakaomapUrl" class="ml-1" href="#" target="_blank">카카오맵에서 보기</a></small>
-                </h6>
+    </div>
+    <div class="modal fade" id="placeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="placeName" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="placeName"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modalBody" class="modal-body">
+                    <p class="small" id="categoryName"></p>
+                    <p class="small" id="roadAddressName"></p>
+                    <p class="small" id="addressName"></p>
+                    <p class="small" id="phone"></p>
+                    <h6 class="font-weight-bold">찾아가는 길
+                        <small><a id="kakaomapUrl" class="ml-1" href="#" target="_blank">카카오맵에서 보기</a></small>
+                    </h6>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc47b44ace308b66b7a99651d1e33213"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc47b44ace308b66b7a99651d1e33213&libraries=services,clusterer,drawing"></script>
-<script src="/webjars/jquery/jquery.min.js"></script>
-<script src="/webjars/popper.js/umd/popper.min.js"></script>
-<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-
-<script>
+<script layout:fragment="script">
     var keyword = '[[${keyword}]]';
     var page = '[[${page}]]';
     var selectedPlace;
@@ -157,5 +118,4 @@
     }
 </script>
 
-</body>
 </html>
