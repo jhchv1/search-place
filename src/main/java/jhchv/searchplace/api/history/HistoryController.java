@@ -1,6 +1,5 @@
-package jhchv.searchplace.v2.controller.history;
+package jhchv.searchplace.api.history;
 
-import jhchv.searchplace.controller.SearchHistoryResponse;
 import jhchv.searchplace.search.history.SearchHistoryRepository;
 import jhchv.searchplace.user.User;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/histories")
+@RequestMapping("/api/histories")
 @RequiredArgsConstructor
 public class HistoryController {
 

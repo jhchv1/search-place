@@ -1,10 +1,10 @@
-package jhchv.searchplace.controller;
+package jhchv.searchplace.api.rank;
 
 import jhchv.searchplace.search.rank.SearchKeywordRank;
 import lombok.Data;
 
 @Data
-public class RealTimeTopKeyword {
+public class KeywordRank {
 
     private int rank;
 
@@ -12,7 +12,7 @@ public class RealTimeTopKeyword {
 
     private long totalSearchCount;
 
-    public RealTimeTopKeyword(SearchKeywordRank rank) {
+    public KeywordRank(SearchKeywordRank rank) {
         this.rank = rank.getRank();
         this.keyword = rank.getKeyword();
         this.totalSearchCount = rank.getTotalSearchCount();

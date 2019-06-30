@@ -85,7 +85,7 @@
     var renderSearchResult = function (keyword, page) {
         $.ajax({
             method: 'GET',
-            url: `/v2/search?keyword=${keyword}&page=${page}`
+            url: `/api/search?keyword=${keyword}&page=${page}`
         })
         .done(function (response) {
             console.log(response);

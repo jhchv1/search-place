@@ -1,4 +1,4 @@
-package jhchv.searchplace.controller;
+package jhchv.searchplace.api.history;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jhchv.searchplace.search.history.SearchHistory;

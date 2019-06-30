@@ -1,4 +1,4 @@
-package jhchv.searchplace.v2.controller.search;
+package jhchv.searchplace.api.search;
 
 import lombok.Data;
 

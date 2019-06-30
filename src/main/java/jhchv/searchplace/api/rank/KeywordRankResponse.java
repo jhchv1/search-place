@@ -1,4 +1,4 @@
-package jhchv.searchplace.v2.controller.rank;
+package jhchv.searchplace.api.rank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package jhchv.searchplace.v2.controller.search;
+package jhchv.searchplace.api.search;
 
 import jhchv.searchplace.search.SearchService;
 import jhchv.searchplace.search.response.SearchResponse;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/v2/search")
+@RequestMapping("/api/search")
 @RequiredArgsConstructor
 public class SearchController {
 

@@ -43,7 +43,7 @@
     var renderKeywordRank = function () {
         $.ajax({
             method: 'GET',
-            url: '/popular-keywords'
+            url: '/api/keyword-ranks'
         })
         .done(function (response) {
             $('#standardDateTime').text(response.standardDateTime + ' 기준');
