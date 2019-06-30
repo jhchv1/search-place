@@ -1,6 +1,7 @@
 package jhchv.searchplace.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,8 +15,10 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findById(username)
+        User user = userRepository.findById(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(), user.getPassword(), AuthorityUtils.NO_AUTHORITIES);
     }
 
 }

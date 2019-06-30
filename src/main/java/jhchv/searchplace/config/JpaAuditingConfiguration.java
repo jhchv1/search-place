@@ -1,6 +1,5 @@
 package jhchv.searchplace.config;
 
-import jhchv.searchplace.user.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -16,19 +15,16 @@ import java.util.Optional;
 public class JpaAuditingConfiguration {
 
     @Bean
-    public AuditorAware<User> auditorAware() {
+    public AuditorAware<String> auditorAware() {
         return () -> {
-            User user = null;
+            String username = null;
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
-                Object principal = authentication.getPrincipal();
-                if (principal instanceof User) {
-                    user = (User) authentication.getPrincipal();
-                }
+                username = authentication.getName();
             }
 
-            return Optional.ofNullable(user);
+            return Optional.ofNullable(username);
         };
     }
 

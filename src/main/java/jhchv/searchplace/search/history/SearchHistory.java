@@ -1,12 +1,14 @@
 package jhchv.searchplace.search.history;
 
-import jhchv.searchplace.user.User;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,9 +23,7 @@ public class SearchHistory {
     private String keyword;
 
     @CreatedBy
-    @ManyToOne
-    @JoinColumn(name = "recordedBy")
-    private User recordedBy;
+    private String recordedBy;
 
     @CreatedDate
     private LocalDateTime recordedDateTime;
