@@ -1,7 +1,6 @@
 package jhchv.searchplace.search.response;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.google.gson.Gson;
 import lombok.Data;
 
 @Data
@@ -37,10 +36,5 @@ public class Document {
     private String placeUrl;
 
     private String distance;
-
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
-    }
 
 }
