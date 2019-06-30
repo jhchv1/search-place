@@ -5,21 +5,20 @@ import jhchv.searchplace.search.response.SearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/search")
+@RequestMapping("/v2/search")
 @RequiredArgsConstructor
 public class SearchController {
 
     private final SearchService searchService;
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public SearchResponse doGet(@RequestBody @Valid SearchRequest request) {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public SearchResponse doGet(@Valid SearchRequest request) {
         return searchService.search(request.getKeyword(), request.getPage());
     }
 

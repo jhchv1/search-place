@@ -18,12 +18,8 @@ public class SearchController {
 
     @GetMapping("/search")
     public String doGet(@Valid SearchRequest request, Model model) {
-        SearchResponse searchResponse = searchService.search(request.getKeyword(), request.getPage());
-
-        model.addAttribute("request", request);
-        model.addAttribute("documents", searchResponse.getDocuments());
-        model.addAttribute("lastPage", searchResponse.getMeta().getIsEnd());
-
+        model.addAttribute("keyword", request.getKeyword());
+        model.addAttribute("page", request.getPage());
         return "search-result";
     }
 

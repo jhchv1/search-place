@@ -36,18 +36,9 @@
 </div>
 
 <div class="container my-5">
-    <ul id="place-list" class="list-group">
-        <li class="list-group-item mb-1" th:each="document : ${documents}">
-            <div>
-                <a th:text="${document.placeName}" href="#" data-toggle="modal" data-target="#placeDetailsModal" th:data-document="${document}"></a>
-                <span th:text="${document.categoryGroupName}" class="small text-muted"></span>
-            </div>
-        </li>
+    <h5 id="searchResultMessage" class="mb-3"></h5>
+    <ul id="placeList" class="list-group">
     </ul>
-
-    <th:block th:if="${!lastPage}">
-        <button id="loadNextPageButton" class="btn btn-kakao form-control">더보기</button>
-    </th:block>
 </div>
 
 <div class="modal fade" id="placeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="placeName" aria-hidden="true">
@@ -77,78 +68,93 @@
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/popper.js/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
 <script>
+    var keyword = '[[${keyword}]]';
+    var page = '[[${page}]]';
+    var selectedPlace;
+
     $(document).ready(function () {
-        let currentPage = '[[${request.page}]]';
-        $('#loadNextPageButton').click(function () {
-            $.ajax({
-                method: 'GET',
-                url: '/search/ajax?keyword=[[${request.keyword}]]&page=' + (++currentPage)
-            })
-            .done(function (response) {
-                response.documents.forEach(function (document) {
-                    var stringified = JSON.stringify(document).replace(/>/gi, '&gt;').replace(/"/gi, "'");
-                    $('#place-list').append(`
-                        <li class="list-group-item mb-1">
-                            <div>
-                                <a href="#" data-toggle="modal" data-target="#placeDetailsModal" data-document="${stringified}">${document.placeName}</a>
-                                <span class="small text-muted">${document.categoryGroupName}</span>
-                            </div>
-                        </li>
-                    `);
-                });
-                if (response.meta.isEnd) {
-                    $('#loadNextPageButton').remove();
-                }
-            })
-            .fail(function () {
-                alert('요청을 처리하는 중 오류가 발생했습니다.');
-            });
-        });
-
-        var data;
-        $(document).on('click', '#place-list a', function () {
-            data = $(this).data('document');
-            if (typeof data == 'string') {
-                data = data.replace(/'/gi, '"');
-                data = JSON.parse(data);
-            }
-            $('#placeName').text(data.placeName);
-            $('#categoryName').text(data.categoryName);
-            $('#roadAddressName').text(data.roadAddressName);
-            $('#addressName').text('(지번) ' + data.addressName);
-            $('#phone').text(data.phone);
-            $('#kakaomapUrl').prop('href', 'https://map.kakao.com/link/map/' + data.id);
-        });
-
-        $('#placeDetailsModal').on('shown.bs.modal', function () {
-            if (!$('#kakaomap').length) {
-                $('#modalBody').append('<div id="kakaomap" style="width:100%;height:500px;border:1px solid rgba(0,0,0,.2);"></div>');
-            }
-            var container = document.getElementById('kakaomap');
-            var position = new kakao.maps.LatLng(data.y, data.x);
-            var options = {
-                center: position,
-                level: 3
-            };
-            kakaomap = new kakao.maps.Map(container, options);
-
-            var content = `
-                <div class="card">
-                    <div class="card-body">
-                        <div>${data.placeName}</div>
-                        <div class="small text-muted">${data.roadAddressName}</div>
-                        <div class="small text-muted">(지번) ${data.addressName}</div>
-                    </div>
-                </div>
-            `;
-            var customOverlay = new kakao.maps.CustomOverlay({
-                position: new kakao.maps.LatLng(Number(data.y), data.x),
-                content: content
-            });
-            customOverlay.setMap(kakaomap);
-        });
+        renderSearchResult(keyword, page);
     });
+
+    $(document).on('click', '#viewMoreButton', function () {
+       renderSearchResult(keyword, ++page);
+    });
+
+    $(document).on('click', '#placeList a', function () {
+        selectedPlace = JSON.parse($(this).data('document').replace(/'/gi, '"'));
+        $('#placeName').text(selectedPlace.placeName);
+        $('#categoryName').text(selectedPlace.categoryName);
+        $('#roadAddressName').text(selectedPlace.roadAddressName);
+        $('#addressName').text('(지번) ' + selectedPlace.addressName);
+        $('#phone').text(selectedPlace.phone);
+        $('#kakaomapUrl').prop('href', 'https://map.kakao.com/link/map/' + selectedPlace.id);
+    });
+
+    $('#placeDetailsModal').on('shown.bs.modal', function () {
+        if (!$('#kakaomap').length) {
+            $('#modalBody').append('<div id="kakaomap" style="width:100%;height:500px;border:1px solid #dee2e6;"></div>');
+        }
+
+        var container = document.getElementById('kakaomap');
+        var position = new kakao.maps.LatLng(selectedPlace.y, selectedPlace.x);
+        var options = {
+            center: position,
+            level: 3
+        };
+        var kakaomap = new kakao.maps.Map(container, options);
+
+        var content = `
+            <div class="card">
+                <div class="card-body">
+                    <div>${selectedPlace.placeName}</div>
+                    <div class="small text-muted">${selectedPlace.roadAddressName}</div>
+                    <div class="small text-muted">(지번) ${selectedPlace.addressName}</div>
+                </div>
+            </div>
+        `;
+        var customOverlay = new kakao.maps.CustomOverlay({
+            position: position,
+            content: content
+        });
+        customOverlay.setMap(kakaomap);
+    });
+
+    var renderSearchResult = function (keyword, page) {
+        $.ajax({
+            method: 'GET',
+            url: `/v2/search?keyword=${keyword}&page=${page}`
+        })
+        .done(function (response) {
+            console.log(response);
+            if (response.documents.length) {
+                $('#searchResultMessage').text(`"${keyword}"에 대해 검색된 장소입니다.`);
+                for (var i = 0; i < response.documents.length; i++) {
+                    var document = response.documents[i];
+                    var stringified = JSON.stringify(document).replace(/>/gi, '&gt;').replace(/"/gi, "'");
+                    var element = `
+                        <li class="list-group-item mb-1">
+                            <a href="#" data-toggle="modal" data-target="#placeDetailsModal" data-document="${stringified}">${document.placeName}</a>
+                            <span class="small text-muted">${document.categoryGroupName}</span>
+                        </li>
+                    `;
+                    $('#placeList').append(element);
+                }
+
+                var $viewMoreButton = $('#viewMoreButton');
+                if ($viewMoreButton.length) {
+                    $viewMoreButton.remove();
+                }
+                if (!response.meta.isEnd) {
+                    $('#placeList').append('<button id="viewMoreButton" class="list-group-item btn btn-kakao">더보기</button>');
+                }
+            }
+            else {
+                $('#searchResultMessage').text(`"${keyword}"에 대해 검색된 장소가 없습니다.`);
+            }
+        });
+    }
 </script>
 
 </body>
