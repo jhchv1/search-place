@@ -10,9 +10,12 @@ public class KeywordRank {
 
     private String keyword;
 
+    private long totalSearchCount;
+
     public KeywordRank(SearchKeywordRank rank) {
         this.rank = rank.getRank();
         this.keyword = rank.getKeyword();
+        this.totalSearchCount = rank.getTotalSearchCount();
     }
 
 }

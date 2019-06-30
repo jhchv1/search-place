@@ -35,28 +35,29 @@
     </nav>
 </div>
 
-<div class="container bg-kakao py-1 mt-5">
-    <form method="GET" action="/search" class="my-5">
-        <div class="form-group">
-            <label for="keyword" class="h5">검색할 장소를 입력하세요!</label>
-            <input type="text" id="keyword" name="keyword" class="form-control form-control-lg border-kakao" />
-        </div>
-    </form>
-</div>
+<div id="content">
+    <div class="container bg-kakao py-1 mt-5">
+        <form id="searchForm" method="GET" action="/search" class="my-5">
+            <div class="form-group">
+                <label for="keyword" class="h5">검색할 장소를 입력하세요!</label>
+                <div class="input-group">
+                    <input type="text" id="keyword" name="keyword" class="form-control form-control-lg border-kakao" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-warning">검색</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
-<div class="container">
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center row">
-            <span class="font-weight-bold">인기 키워드 순위</span>
-            <small class="text-muted" th:text="${#temporals.format(standardDateTime, 'yyyy-MM-dd HH:mm:ss')} + ' 기준'"></small>
-        </li>
-        <li class="list-group-item row" th:if="${#lists.isEmpty(realTimeTopKeywords)}">검색된 키워드가 없습니다.</li>
-        <li class="list-group-item row" th:each="realTimeTopKeyword : ${realTimeTopKeywords}">
-            <span class="badge col-1" th:text="${realTimeTopKeyword.rank}"></span>
-            <a class="text-dark" th:text="${realTimeTopKeyword.keyword}" th:href="@{/search(keyword=${realTimeTopKeyword.keyword})}"></a>
-            <small class="text-muted float-right" th:text="'총 ' + ${realTimeTopKeyword.totalSearchCount + '회 검색'}"></small>
-        </li>
-    </ul>
+    <div class="container">
+        <ul id="keywordRankList" class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center row">
+                <span class="font-weight-bold">인기 키워드 순위</span>
+                <small id="standardDateTime" class="text-muted"></small>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <form name="logoutForm" method="POST" th:action="@{/logout}" th:hidden="true">
@@ -66,5 +67,49 @@
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/popper.js/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        renderKeywordRank();
+    });
+
+    $('#searchForm').on('submit', function () {
+        var $keyword = $('#keyword');
+        if (!$keyword.val()) {
+           alert('검색할 장소를 입력하세요!');
+           $keyword.focus();
+           return false;
+        }
+    });
+
+    var renderKeywordRank = function () {
+        $.ajax({
+            method: 'GET',
+            url: '/popular-keywords'
+        })
+        .done(function (response) {
+            $('#standardDateTime').text(response.standardDateTime + ' 기준');
+
+            var $keywordRankList = $('#keywordRankList');
+            if (response.keywordRanks.length) {
+                for (var i = 0; i < response.keywordRanks.length; i++) {
+                    var keywordRank = response.keywordRanks[i];
+                    $keywordRankList.append(`
+                        <li class="list-group-item row">
+                            <span class="badge col-1">${keywordRank.rank}</span>
+                            <a class="text-dark" href="/search?keyword=${keywordRank.keyword}">${keywordRank.keyword}</a>
+                            <small class="text-muted float-right">총 ${keywordRank.totalSearchCount}회 검색</small>
+                        </li>
+                    `);
+                }
+            }
+            else {
+                $keywordRankList.append('<li class="list-group-item row">집계된 키워드가 없습니다.</li>');
+            }
+        })
+        .fail(function () {
+            alert('인기 키워드 순위를 로드하지 못했습니다.');
+        });
+    };
+</script>
 </body>
 </html>
