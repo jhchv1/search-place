@@ -24,7 +24,7 @@ public class KeywordRankScheduler {
 
     private final KeywordRankRepository keywordRankRepository;
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0/30 * * * * *")
     public void schedule() {
         LocalDateTime now = LocalDateTime.now();
 
