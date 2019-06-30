@@ -1,74 +1,65 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div layout:fragment="content">
-    <div class="container bg-kakao py-1 mt-5">
-        <form id="searchForm" method="GET" action="/search" class="my-5">
-            <div class="form-group">
-                <label for="keyword" class="h5">검색할 장소를 입력하세요!</label>
-                <div class="input-group">
-                    <input type="text" id="keyword" name="keyword" class="form-control form-control-lg border-kakao" />
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-warning">검색</button>
-                    </div>
-                </div>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.custom.css">
+    <title>장소 검색 서비스</title>
+</head>
+
+<body>
+<div class="bg-kakao">
+    <nav class="container navbar navbar-expand navbar-dark bg-kakao">
+        <a class="navbar-brand text-dark font-weight-bold" th:href="@{/}">장소 검색 서비스</a>
+        <form id="searchForm" class="input-group mr-auto" style="width: 500px;">
+            <input type="text" id="keyword" name="keyword" class="form-control border-warning" />
+            <div class="input-group-append">
+                <button class="btn btn-warning">검색</button>
             </div>
         </form>
-    </div>
-
-    <div class="container">
-        <ul id="keywordRankList" class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center row">
-                <span class="font-weight-bold">인기 키워드 순위</span>
-                <small id="standardDateTime" class="text-muted"></small>
-            </li>
+        <ul class="navbar-nav">
+            <th:block sec:authorize="isAnonymous()">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" th:href="@{/login}">로그인</a>
+                </li>
+            </th:block>
+            <th:block sec:authorize="!isAnonymous()">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        내 정보
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="javascript:renderSearchHistoryPage();">내 검색 히스토리</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="javascript:document.logoutForm.submit();">로그아웃</a>
+                    </div>
+                </li>
+            </th:block>
         </ul>
-    </div>
+    </nav>
 </div>
 
-<script layout:fragment="script">
+<div id="content" class="container my-5">
+</div>
+
+<form name="logoutForm" method="POST" th:action="@{/logout}" th:hidden="true">
+    <input type="submit" />
+</form>
+
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/popper.js/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc47b44ace308b66b7a99651d1e33213"></script>
+<script src="/js/search-place.js"></script>
+<script src="/js/search-history.js"></script>
+<script src="/js/keyword-ranks.js"></script>
+<script>
     $(document).ready(function () {
-        renderKeywordRank();
+        renderKeywordRanksPage();
     });
-
-    $('#searchForm').on('submit', function () {
-        var $keyword = $('#keyword');
-        if (!$keyword.val()) {
-           alert('검색할 장소를 입력하세요!');
-           $keyword.focus();
-           return false;
-        }
-    });
-
-    var renderKeywordRank = function () {
-        $.ajax({
-            method: 'GET',
-            url: '/api/keyword-ranks'
-        })
-        .done(function (response) {
-            $('#standardDateTime').text(response.standardDateTime + ' 기준');
-
-            var $keywordRankList = $('#keywordRankList');
-            if (response.keywordRanks.length) {
-                for (var i = 0; i < response.keywordRanks.length; i++) {
-                    var keywordRank = response.keywordRanks[i];
-                    $keywordRankList.append(`
-                        <li class="list-group-item row">
-                            <span class="badge col-1">${keywordRank.rank}</span>
-                            <a class="text-dark" href="/search?keyword=${keywordRank.keyword}">${keywordRank.keyword}</a>
-                            <small class="text-muted float-right">총 ${keywordRank.totalSearchCount}회 검색</small>
-                        </li>
-                    `);
-                }
-            }
-            else {
-                $keywordRankList.append('<li class="list-group-item row">집계된 키워드가 없습니다.</li>');
-            }
-        })
-        .fail(function () {
-            alert('인기 키워드 순위를 로드하지 못했습니다.');
-        });
-    };
 </script>
 
+</body>
 </html>
