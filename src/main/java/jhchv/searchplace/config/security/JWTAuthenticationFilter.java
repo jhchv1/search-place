@@ -2,9 +2,10 @@ package jhchv.searchplace.config.security;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,8 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author Jihun Cha
+ */
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTVerifier jwtVerifier;
 
@@ -37,8 +41,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Authentication auth = new UsernamePasswordAuthenticationToken(jwt.getClaim("username").asString(), null, null);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
+        catch (TokenExpiredException ex) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.getWriter().write("{\"code\":\"token_expired\"}");
+            return;
+        }
         catch (JWTVerificationException ex) {
-            throw new AccessDeniedException("토큰이 유효하지 않습니다.", ex);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.getWriter().write("{\"code\":\"invalid_token\"}");
+            return;
         }
 
         chain.doFilter(request, response);

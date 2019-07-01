@@ -129,14 +129,8 @@ $(document).on('submit', '#loginForm', function () {
         $passwordInput.focus();
         return false;
     }
-    btoa($idInput.val() + ':' + $passwordInput.val());
-    $.ajax({
-        method: 'POST',
-        url: '/token',
-        headers: {
-            Authorization: 'Basic ' + btoa($idInput.val() + ':' + $passwordInput.val())
-        }
-    })
+    sessionStorage.setItem('basicToken', 'Basic ' + btoa($idInput.val() + ':' + $passwordInput.val()));
+    requestAccessToken()
     .done(function (response) {
         sessionStorage.setItem('accessToken', response.type + ' ' + response.accessToken);
         document.location = '/';
@@ -147,7 +141,28 @@ $(document).on('submit', '#loginForm', function () {
     return false;
 });
 
+$(document).on('show.bs.modal', '#loginModal', function () {
+    $('#idInput').val('');
+    $('#passwordInput').val('');
+    $('#loginFailMessage').hide();
+});
+
+$(document).on('shown.bs.modal', '#loginModal', function () {
+    $('#idInput').focus();
+});
+
+function requestAccessToken() {
+    return $.ajax({
+        method: 'POST',
+        url: '/token',
+        headers: {
+            Authorization: sessionStorage.getItem('basicToken')
+        }
+    });
+}
+
 function logout() {
+    sessionStorage.removeItem('basicToken');
     sessionStorage.removeItem('accessToken');
     document.location = '/';
 }
@@ -286,8 +301,20 @@ function loadSearchResult(keyword, page) {
             $('#searchResultMessage').text(`"${keyword}"에 대해 검색된 장소가 없습니다.`);
         }
     })
-    .fail(function () {
-        alert('장소 검색 중 오류가 발생했습니다.');
+    .fail(function (response) {
+        if (response.status === 403 && JSON.parse(response.responseText).code === 'token_expired') {
+            requestAccessToken()
+            .done(function (response) {
+                sessionStorage.setItem('accessToken', response.type + ' ' + response.accessToken);
+                loadSearchResult(keyword, page);
+            })
+            .fail(function () {
+                alert('장소 검색 중 오류가 발생했습니다.');
+            });
+        }
+        else {
+            alert('장소 검색 중 오류가 발생했습니다.');
+        }
     });
 }
 
@@ -343,7 +370,19 @@ function loadSearchHistory() {
             $('#searchResultMessage').text('장소를 검색한 히스토리가 없습니다.');
         }
     })
-    .fail(function () {
-        alert('내 검색 히스토리를 불러오지 못했습니다.');
+    .fail(function (response) {
+        if (response.status === 403 && JSON.parse(response.responseText).code === 'token_expired') {
+            requestAccessToken()
+            .done(function (response) {
+                sessionStorage.setItem('accessToken', response.type + ' ' + response.accessToken);
+                loadSearchHistory();
+            })
+            .fail(function () {
+                alert('내 검색 히스토리를 불러오지 못했습니다.');
+            });
+        }
+        else {
+            alert('내 검색 히스토리를 불러오지 못했습니다.');
+        }
     });
 }

@@ -10,10 +10,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("kakao")
 public class KakaoConfigurationProperties {
 
-    private String restApiKey;
-
-    private String javaScriptKey;
-
     private String searchPlaceByKeywordUrl;
+
+    private String restApiKey;
 
 }

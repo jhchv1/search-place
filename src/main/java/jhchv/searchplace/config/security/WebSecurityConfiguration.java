@@ -62,7 +62,7 @@ public class WebSecurityConfiguration {
                     .anyRequest().authenticated()
 
                     .and()
-                    .addFilterAfter(new JwtAuthenticationFilter(jwtVerifier), BasicAuthenticationFilter.class)
+                    .addFilterAfter(new JWTAuthenticationFilter(jwtVerifier), BasicAuthenticationFilter.class)
                     .csrf().disable()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
