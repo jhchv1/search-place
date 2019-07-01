@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @author Jihun Cha
  */
 @RestController
-@RequestMapping("/keyword-ranks")
+@RequestMapping("/api/keyword-ranks")
 @RequiredArgsConstructor
 public class KeywordRankController {
 

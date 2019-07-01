@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @author Jihun Cha
  */
 @RestController
-@RequestMapping("/histories")
+@RequestMapping("/api/histories")
 @RequiredArgsConstructor
 public class HistoryController {
 

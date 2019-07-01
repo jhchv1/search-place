@@ -14,7 +14,7 @@ import javax.validation.Valid;
  * @author Jihun Cha
  */
 @RestController
-@RequestMapping("/search")
+@RequestMapping("/api/search")
 @RequiredArgsConstructor
 public class SearchController {
 
