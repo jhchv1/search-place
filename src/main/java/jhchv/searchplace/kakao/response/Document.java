@@ -7,7 +7,7 @@ import lombok.Data;
  * @author Jihun Cha
  */
 @Data
-public class Document {
+class Document {
 
     private String id;
 

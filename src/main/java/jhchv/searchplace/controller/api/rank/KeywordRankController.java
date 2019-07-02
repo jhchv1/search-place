@@ -1,4 +1,4 @@
-package jhchv.searchplace.controller.rank;
+package jhchv.searchplace.controller.api.rank;
 
 import jhchv.searchplace.search.rank.KeywordRank;
 import jhchv.searchplace.search.rank.KeywordRankRepository;
@@ -29,7 +29,7 @@ public class KeywordRankController {
 
         List<KeywordRank> ranks = keywordRankRepository.findRealTimeTopTen();
         if (ranks.isEmpty()) {
-            response.setStandardDateTime(LocalDateTime.now().withSecond(0));
+            response.setStandardDateTime(LocalDateTime.now());
             response.setKeywordRanks(new ArrayList<>());
             return response;
         }

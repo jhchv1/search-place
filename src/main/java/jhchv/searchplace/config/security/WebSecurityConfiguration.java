@@ -4,11 +4,13 @@ import com.auth0.jwt.JWTVerifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 /**
@@ -17,8 +19,17 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 public class WebSecurityConfiguration {
 
-    public static void init() {
+    public static HttpSecurity init(HttpSecurity http) throws Exception {
+        return http
+                .exceptionHandling()
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                .and()
+                .csrf().disable();
     }
 
     @Configuration
@@ -27,20 +38,14 @@ public class WebSecurityConfiguration {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
+            WebSecurityConfiguration.init(http)
                     .antMatcher("/token")
 
                     .authorizeRequests()
                     .anyRequest().authenticated()
 
                     .and()
-                    .httpBasic()
-
-                    .and()
-                    .csrf().disable()
-
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                    .httpBasic();
         }
 
     }
@@ -54,7 +59,7 @@ public class WebSecurityConfiguration {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
+            WebSecurityConfiguration.init(http)
                     .antMatcher("/api/**")
 
                     .authorizeRequests()
@@ -62,10 +67,7 @@ public class WebSecurityConfiguration {
                     .anyRequest().authenticated()
 
                     .and()
-                    .addFilterAfter(new JWTAuthenticationFilter(jwtVerifier), BasicAuthenticationFilter.class)
-                    .csrf().disable()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                    .addFilterAfter(new JWTAuthenticationFilter(jwtVerifier), BasicAuthenticationFilter.class);
         }
 
     }
@@ -75,15 +77,19 @@ public class WebSecurityConfiguration {
 
         @Override
         public void configure(WebSecurity web) {
-            web.ignoring().antMatchers("/h2-console/**");
+            web.ignoring().antMatchers("/", "/webjars/**", "/js/**", "/css/**", "/favicon.ico");
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
+            WebSecurityConfiguration.init(http)
                     .authorizeRequests()
-                    .antMatchers("/", "/webjars/**", "/js/**", "/css/**", "/favicon.ico").permitAll()
-                    .anyRequest().authenticated();
+                    .antMatchers("/h2-console/**").permitAll()
+                    .anyRequest().authenticated()
+
+                    .and()
+                    .headers()
+                    .frameOptions().sameOrigin();
         }
 
     }

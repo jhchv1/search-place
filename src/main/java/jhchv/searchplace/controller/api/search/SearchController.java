@@ -1,4 +1,4 @@
-package jhchv.searchplace.controller.search;
+package jhchv.searchplace.controller.api.search;
 
 import jhchv.searchplace.search.SearchResponse;
 import jhchv.searchplace.search.SearchService;

@@ -1,4 +1,4 @@
-package jhchv.searchplace.controller.search;
+package jhchv.searchplace.controller.api.search;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * @author Jihun Cha
  */
 @Data
-public class SearchRequest {
+class SearchRequest {
 
     @NotNull
     private String keyword;

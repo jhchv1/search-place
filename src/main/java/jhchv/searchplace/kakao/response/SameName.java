@@ -9,7 +9,7 @@ import java.util.List;
  * @author Jihun Cha
  */
 @Data
-public class SameName {
+class SameName {
 
     private List<String> region;
 

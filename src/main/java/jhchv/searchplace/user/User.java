@@ -10,7 +10,7 @@ import javax.persistence.Id;
  */
 @Data
 @Entity
-public class User {
+class User {
 
     @Id
     private String username;

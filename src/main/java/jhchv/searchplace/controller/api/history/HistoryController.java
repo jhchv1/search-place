@@ -1,4 +1,4 @@
-package jhchv.searchplace.controller.history;
+package jhchv.searchplace.controller.api.history;
 
 import jhchv.searchplace.search.history.SearchHistoryRepository;
 import lombok.RequiredArgsConstructor;

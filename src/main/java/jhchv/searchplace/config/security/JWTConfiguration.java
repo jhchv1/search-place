@@ -42,10 +42,10 @@ public class JWTConfiguration {
 
         public String create(String username) throws JWTCreationException {
             return JWT.create()
-                    .withIssuer(issuer)
+                    .withIssuer(JWTConfiguration.this.issuer)
                     .withExpiresAt(Date.from(LocalDateTime.now().plusMinutes(30L).atZone(ZoneId.systemDefault()).toInstant()))
                     .withClaim("username", username)
-                    .sign(algorithm);
+                    .sign(JWTConfiguration.this.algorithm);
         }
 
     }

@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "keyword", "rank", "rankedDateTime" }))
+@Table(indexes = @Index(columnList = "rankedDateTime"),
+       uniqueConstraints = @UniqueConstraint(columnNames = { "keyword", "rank", "rankedDateTime" }))
 public class KeywordRank {
 
     @Id

@@ -1,4 +1,4 @@
-package jhchv.searchplace.controller.rank;
+package jhchv.searchplace.controller.api.rank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author Jihun Cha
  */
 @Data
-public class KeywordRankResponse {
+class KeywordRankResponse {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime standardDateTime;

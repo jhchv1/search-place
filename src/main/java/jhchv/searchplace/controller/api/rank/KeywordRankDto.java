@@ -1,4 +1,4 @@
-package jhchv.searchplace.controller.rank;
+package jhchv.searchplace.controller.api.rank;
 
 import jhchv.searchplace.search.rank.KeywordRank;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.Data;
  * @author Jihun Cha
  */
 @Data
-public class KeywordRankDto {
+class KeywordRankDto {
 
     private int rank;
 
@@ -15,7 +15,7 @@ public class KeywordRankDto {
 
     private long totalSearchCount;
 
-    public KeywordRankDto(KeywordRank rank) {
+    KeywordRankDto(KeywordRank rank) {
         this.rank = rank.getRank();
         this.keyword = rank.getKeyword();
         this.totalSearchCount = rank.getTotalSearchCount();

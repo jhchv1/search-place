@@ -302,7 +302,8 @@ function loadSearchResult(keyword, page) {
         }
     })
     .fail(function (response) {
-        if (response.status === 403 && JSON.parse(response.responseText).code === 'token_expired') {
+        response = JSON.parse(response.responseText);
+        if (response.status === 401 && response.code === 'TOKEN_EXPIRED') {
             requestAccessToken()
             .done(function (response) {
                 sessionStorage.setItem('accessToken', response.type + ' ' + response.accessToken);
@@ -371,7 +372,8 @@ function loadSearchHistory() {
         }
     })
     .fail(function (response) {
-        if (response.status === 403 && JSON.parse(response.responseText).code === 'token_expired') {
+        response = JSON.parse(response.responseText);
+        if (response.status === 401 && response.code === 'TOKEN_EXPIRED') {
             requestAccessToken()
             .done(function (response) {
                 sessionStorage.setItem('accessToken', response.type + ' ' + response.accessToken);

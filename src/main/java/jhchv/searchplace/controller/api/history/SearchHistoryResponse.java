@@ -1,4 +1,4 @@
-package jhchv.searchplace.controller.history;
+package jhchv.searchplace.controller.api.history;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jhchv.searchplace.search.history.SearchHistory;
@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
  * @author Jihun Cha
  */
 @Data
-public class SearchHistoryResponse {
+class SearchHistoryResponse {
 
     private String keyword;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime recordedDateTime;
 
-    public SearchHistoryResponse(SearchHistory searchHistory) {
+    SearchHistoryResponse(SearchHistory searchHistory) {
         this.keyword = searchHistory.getKeyword();
         this.recordedDateTime = searchHistory.getRecordedDateTime();
     }

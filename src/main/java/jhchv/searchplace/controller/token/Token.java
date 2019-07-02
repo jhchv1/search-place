@@ -2,14 +2,17 @@ package jhchv.searchplace.controller.token;
 
 import lombok.Data;
 
+/**
+ * @author Jihun Cha
+ */
 @Data
-public class Token {
+class Token {
 
     private String type = "Bearer";
 
     private String accessToken;
 
-    public Token(String accessToken) {
+    Token(String accessToken) {
         this.accessToken = accessToken;
     }
 

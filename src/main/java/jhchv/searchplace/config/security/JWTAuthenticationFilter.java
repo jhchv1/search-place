@@ -41,14 +41,11 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             Authentication auth = new UsernamePasswordAuthenticationToken(jwt.getClaim("username").asString(), null, null);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
-        catch (TokenExpiredException ex) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.getWriter().write("{\"code\":\"token_expired\"}");
-            return;
-        }
         catch (JWTVerificationException ex) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.getWriter().write("{\"code\":\"invalid_token\"}");
+            int status = HttpStatus.UNAUTHORIZED.value();
+            response.setStatus(status);
+            response.getWriter().write(String.format("{\"status\":%d,\"code\":\"%s\",\"message\":\"%s\"}",
+                    status, ex instanceof TokenExpiredException ? "TOKEN_EXPIRED" : "UNDEFINED", ex.getMessage()));
             return;
         }
 

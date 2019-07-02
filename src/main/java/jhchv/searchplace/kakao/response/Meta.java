@@ -7,7 +7,7 @@ import lombok.Data;
  * @author Jihun Cha
  */
 @Data
-public class Meta {
+class Meta {
 
     @JsonSetter("total_count")
     private Integer totalCount;
