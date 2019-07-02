@@ -5,7 +5,9 @@
     renderKeywordRanksPage();
 })();
 
-/////////////////////////////////////////////////////////////////
+/************************
+ * 메인 레이아웃 초기화 *
+ ************************/
 
 function appendHeader(isLogin) {
     var loginButton = `
@@ -70,7 +72,9 @@ function appendContentArea() {
     $('#container').append('<div id="content" class="container my-5"></div>');
 }
 
-//////////////////////////////////////////////////////
+/********************
+ * 인기 키워드 목록 *
+ ********************/
 
 function renderKeywordRanksPage() {
     var $content = $('#content').empty();
@@ -116,7 +120,9 @@ function loadKeywordRanks() {
     });
 }
 
-///////////////////////////////////////////
+/**************************
+ * 로그인, 로그아웃, 토큰 *
+ **************************/
 
 $(document).on('submit', '#loginForm', function () {
     var $idInput = $('#idInput');
@@ -151,6 +157,12 @@ $(document).on('shown.bs.modal', '#loginModal', function () {
     $('#idInput').focus();
 });
 
+function logout() {
+    sessionStorage.removeItem('basicToken');
+    sessionStorage.removeItem('accessToken');
+    document.location = '/';
+}
+
 function requestAccessToken() {
     return $.ajax({
         method: 'POST',
@@ -161,13 +173,9 @@ function requestAccessToken() {
     });
 }
 
-function logout() {
-    sessionStorage.removeItem('basicToken');
-    sessionStorage.removeItem('accessToken');
-    document.location = '/';
-}
-
-//////////////////////////////////////////////////////////////////
+/**************************
+ * 장소 검색 및 상세 조회 *
+ **************************/
 
 var keyword;
 var page;
@@ -325,7 +333,9 @@ function search(str) {
     renderSearchResultPage();
 }
 
-////////////////////////////////////////////////////////////////////////////
+/********************
+ * 내 검색 히스토리 *
+ ********************/
 
 function renderSearchHistoryPage() {
     var $content = $('#content').empty();
