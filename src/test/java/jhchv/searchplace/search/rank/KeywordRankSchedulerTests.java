@@ -22,13 +22,13 @@ import java.util.List;
 @DataJpaTest
 public class KeywordRankSchedulerTests {
 
+    private KeywordRankScheduler keywordRankScheduler;
+
     @Autowired
     private TotalSearchCountRepository totalSearchCountRepository;
 
     @Autowired
     private KeywordRankRepository keywordRankRepository;
-
-    private KeywordRankScheduler keywordRankScheduler;
 
     @Before
     public void setup() {

@@ -23,7 +23,7 @@ public class JpaAuditingConfiguration {
             String username = null;
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
                 username = authentication.getName();
             }
 

@@ -1,18 +1,20 @@
 package jhchv.searchplace.controller.token;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Jihun Cha
  */
 @Data
-class Token {
+@NoArgsConstructor
+class TokenResponse {
 
     private String type = "Bearer";
 
     private String accessToken;
 
-    Token(String accessToken) {
+    TokenResponse(String accessToken) {
         this.accessToken = accessToken;
     }
 

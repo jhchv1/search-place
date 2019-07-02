@@ -4,10 +4,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
@@ -18,12 +18,12 @@ import static org.mockito.BDDMockito.given;
  *
  * @author Jihun Cha
  */
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class UserServiceTests {
 
     private UserService userService;
 
-    @MockBean
+    @Mock
     private UserRepository userRepository;
 
     @Before
@@ -36,7 +36,7 @@ public class UserServiceTests {
         String username = "jhchv";
         User user = new User();
         user.setUsername(username);
-        user.setPassword("temp");
+        user.setPassword("password");
         given(userRepository.findById(username)).willReturn(Optional.of(user));
 
         UserDetails userDetails = userService.loadUserByUsername(username);

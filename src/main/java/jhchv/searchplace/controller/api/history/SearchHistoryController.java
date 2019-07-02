@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/histories")
 @RequiredArgsConstructor
-public class HistoryController {
+public class SearchHistoryController {
 
     private final SearchHistoryRepository searchHistoryRepository;
 
