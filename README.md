@@ -2,7 +2,7 @@
 이 프로젝트는 카카오의 `키워드로 장소 검색` API를 활용하여 구현되었습니다. 또한 토큰에 기반하여 API 인증을 처리함으로써, 서버의 무상태성을 보장함과 동시에 스케일 아웃이 용이하도록 구현했습니다.    
 
 ## 다운로드 및 실행
-- JAR 파일 다운로드 링크: [https://github.com/jhchv1/search-place/archive/search-place-1.0.0.RELEASE.jar]()
+- JAR 파일 다운로드 링크: https://github.com/jhchv1/search-place/releases/download/1.0.0/search-place-1.0.0.RELEASE.jar
 - 실행:
 ```
 $ java -jar search-place-1.0.0.RELEASE.jar
