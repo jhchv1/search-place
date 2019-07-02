@@ -1,13 +1,11 @@
 package jhchv.searchplace.controller.api.history;
 
 import jhchv.searchplace.config.security.JWTConfiguration;
-import jhchv.searchplace.search.history.SearchHistoryRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,9 +34,6 @@ public class SearchHistoryControllerTests {
 
     @Autowired
     private JWTConfiguration.JWTCreator jwtCreator;
-
-    @MockBean
-    private SearchHistoryRepository searchHistoryRepository;
 
     @Before
     public void setup() {
